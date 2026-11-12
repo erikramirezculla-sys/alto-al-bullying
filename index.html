@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alto al Bullying</title>
+
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f0f5f9;color:#243447}
+header{background:#176b87;color:white;text-align:center;padding:25px 12px}
+header h1{margin:0}
+nav{display:flex;justify-content:center;gap:10px;padding:15px;flex-wrap:wrap}
+button{border:0;border-radius:8px;padding:12px 16px;background:#176b87;color:white;cursor:pointer;font-weight:bold}
+button:hover{opacity:.85}
+.container{max-width:850px;margin:20px auto;padding:15px}
+.card{background:white;padding:22px;border-radius:14px;box-shadow:0 3px 12px #0001;margin-bottom:18px}
+h2{color:#176b87}
+label{display:block;margin-top:15px;font-weight:bold}
+input,select,textarea{width:100%;padding:12px;margin-top:7px;border:1px solid #ccd5df;border-radius:8px}
+textarea{min-height:100px}
+input[type=checkbox]{width:auto}
+.hidden{display:none!important}
+.notice{background:#e6f4f7;padding:13px;border-radius:8px;font-size:14px;margin-top:15px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:#e6f4f7;padding:15px;border-radius:10px;text-align:center}
+.stat strong{display:block;font-size:25px;color:#176b87}
+.report{border:1px solid #dce3ea;border-radius:10px;padding:15px;margin-top:12px}
+.report p{overflow-wrap:anywhere}
+.badge{display:inline-block;background:#e6f4f7;padding:5px 9px;border-radius:20px;font-size:12px}
+.danger{background:#b93838}
+.gray{background:#64748b}
+footer{text-align:center;padding:20px;color:#64748b;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🛡️ ALTO AL BULLYING</h1>
+<p>Tu voz importa. No estás solo.</p>
+</header>
+
+<nav>
+<button onclick="mostrar('estudiante')">👩‍🎓 Estudiantes</button>
+<button onclick="mostrar('acceso')">🔐 Administrador</button>
+</nav>
+
+<div class="container">
+
+<!-- PANEL DEL ESTUDIANTE -->
+<section id="estudiante" class="card">
+<h2>📢 Reportar un caso</h2>
+<p>Cuéntanos qué sucedió. Estamos aquí para escucharte.</p>
+
+<form id="formulario">
+
+<label>Tipo de bullying:</label>
+<select id="tipo" required>
+<option value="">Selecciona</option>
+<option>Físico</option>
+<option>Verbal</option>
+<option>Psicológico</option>
+<option>Exclusión social</option>
+<option>Ciberbullying</option>
+</select>
+
+<label>¿Dónde ocurrió?</label>
+<select id="lugar" required>
+<option value="">Selecciona</option>
+<option>Salón de clases</option>
+<option>Patio escolar</option>
+<option>Baños</option>
+<option>Fuera del colegio</option>
+<option>Redes sociales o internet</option>
+<option>Otro</option>
+</select>
+
+<label>Fecha del incidente:</label>
+<input type="date" id="fecha" required>
+
+<label>Descripción de lo ocurrido:</label>
+<textarea id="descripcion" maxlength="1500"
+placeholder="Describe lo sucedido..." required></textarea>
+
+<label>¿Necesitas ayuda?</label>
+<select id="ayuda" required>
+<option value="">Selecciona</option>
+<option>Sí, necesito ayuda</option>
+<option>Quiero hablar con un docente</option>
+<option>Solo deseo informar</option>
+</select>
+
+<label>
+<input type="checkbox" id="anonimo">
+Enviar reporte anónimo
+</label>
+
+<div id="datos">
+<label>Nombre (opcional):</label>
+<input type="text" id="nombre" maxlength="60"
+placeholder="Escribe tu nombre">
+</div>
+
+<div class="notice">
+🔒 No incluyas contraseñas, direcciones, teléfonos
+ni datos privados de otros estudiantes.
+Si necesitas protección inmediata, busca a un adulto
+de confianza.
+</div>
+
+<button type="submit" style="width:100%;margin-top:20px">
+ENVIAR REPORTE
+</button>
+</form>
+
+<div id="confirmacion" class="notice hidden">
+<h3>✅ Reporte registrado</h3>
+<p>Tu reporte se ha guardado en este dispositivo.
+Comunícate también con un docente o tutor para que
+pueda atender tu situación.</p>
+<button onclick="nuevo()">Realizar otro reporte</button>
+</div>
+</section>
+
+<!-- ACCESO ADMINISTRADOR -->
+<section id="acceso" class="card hidden">
+<h2>🔐 Acceso de administrador</h2>
+<p>Espacio destinado al personal autorizado.</p>
+
+<label>Contraseña:</label>
+<input type="password" id="clave" placeholder="Ingresa la contraseña">
+
+<button onclick="ingresar()" style="width:100%">
+INGRESAR
+</button>
+<p id="error" style="color:red"></p>
+
+<div class="notice">
+Contraseña inicial de demostración: <b>Admin123!</b>
+Cámbiala antes de utilizar el prototipo.
+</div>
+</section>
+
+<!-- PANEL ADMINISTRADOR -->
+<section id="panel" class="hidden">
+
+<div class="card">
+<h2>📊 Panel de administrador</h2>
+<p>Resumen de los reportes registrados.</p>
+
+<div class="stats">
+<div class="stat">
+<strong id="total">0</strong>
+Reportes
+</div>
+<div class="stat">
+<strong id="pendientes">0</strong>
+Pendientes
+</div>
+<div class="stat">
+<strong id="atendidos">0</strong>
+Atendidos
+</div>
+</div>
+
+<button onclick="salir()" class="gray" style="margin-top:18px">
+CERRAR SESIÓN
+</button>
+</div>
+
+<div class="card">
+<h2>📋 Reportes recibidos</h2>
+
+<label>Filtrar por tipo:</label>
+<select id="filtro" onchange="cargarReportes()">
+<option value="">Todos</option>
+<option>Físico</option>
+<option>Verbal</option>
+<option>Psicológico</option>
+<option>Exclusión social</option>
+<option>Ciberbullying</option>
+</select>
+
+<div id="lista"></div>
+</div>
+
+</section>
+
+</div>
+
+<footer>
+ALTO AL BULLYING © 2026
+<br>Por una escuela segura y respetuosa.
+</footer>
+
+<script>
+
+// DEMOSTRACIÓN: contraseña inicial
+const CLAVE_ADMIN = "chiquianyluanaxsiempre";
+
+function obtenerReportes(){
+    return JSON.parse(localStorage.getItem("reportes") || "[]");
+}
+
+function guardarReportes(reportes){
+    localStorage.setItem("reportes",JSON.stringify(reportes));
+}
+
+function mostrar(id){
+    ["estudiante","acceso","panel"].forEach(x=>{
+        document.getElementById(x).classList.add("hidden");
+    });
+    document.getElementById(id).classList.remove("hidden");
+}
+
+document.getElementById("anonimo").addEventListener("change",function(){
+    document.getElementById("datos").classList.toggle("hidden",this.checked);
+});
+
+// GUARDAR REPORTE
+document.getElementById("formulario").addEventListener("submit",function(e){
+    e.preventDefault();
+
+    const anonimo=document.getElementById("anonimo").checked;
+
+    const reporte={
+        id:Date.now(),
+        tipo:document.getElementById("tipo").value,
+        lugar:document.getElementById("lugar").value,
+        fecha:document.getElementById("fecha").value,
+        descripcion:document.getElementById("descripcion").value.trim(),
+        ayuda:document.getElementById("ayuda").value,
+        nombre:anonimo?"Anónimo":
+          (document.getElementById("nombre").value.trim() || "No proporcionado"),
+        estado:"Pendiente",
+        creado:new Date().toLocaleString("es-PE")
+    };
+
+    if(!reporte.descripcion){
+        alert("Describe lo sucedido.");
+        return;
+    }
+
+    const reportes=obtenerReportes();
+    reportes.push(reporte);
+    guardarReportes(reportes);
+
+    this.classList.add("hidden");
+    document.getElementById("confirmacion").classList.remove("hidden");
+});
+
+function nuevo(){
+    document.getElementById("formulario").reset();
+    document.getElementById("datos").classList.remove("hidden");
+    document.getElementById("formulario").classList.remove("hidden");
+    document.getElementById("confirmacion").classList.add("hidden");
+}
+
+// ACCESO ADMINISTRADOR
+function ingresar(){
+    const clave=document.getElementById("clave").value;
+
+    if(clave===CLAVE_ADMIN){
+        document.getElementById("error").textContent="";
+        document.getElementById("clave").value="";
+        mostrar("panel");
+        cargarReportes();
+    }else{
+        document.getElementById("error").textContent="Contraseña incorrecta.";
+    }
+}
+
+function salir(){
+    mostrar("estudiante");
+}
+
+// MOSTRAR REPORTES
+function cargarReportes(){
+    const reportes=obtenerReportes();
+    const filtro=document.getElementById("filtro").value;
+
+    document.getElementById("total").textContent=reportes.length;
+    document.getElementById("pendientes").textContent=
+        reportes.filter(r=>r.estado==="Pendiente").length;
+    document.getElementById("atendidos").textContent=
+        reportes.filter(r=>r.estado==="Atendido").length;
+
+    const lista=document.getElementById("lista");
+    lista.innerHTML="";
+
+    const seleccionados=reportes.filter(r=>!filtro || r.tipo===filtro);
+
+    if(seleccionados.length===0){
+        lista.innerHTML="<p>No hay reportes para mostrar.</p>";
+        return;
+    }
+
+    seleccionados.slice().reverse().forEach(r=>{
+        const div=document.createElement("div");
+        div.className="report";
+
+        const titulo=document.createElement("h3");
+        titulo.textContent="Reporte #"+r.id;
+
+        const datos=document.createElement("p");
+        datos.textContent=
+            "Estudiante: "+r.nombre+
+            "\nTipo: "+r.tipo+
+            "\nLugar: "+r.lugar+
+            "\nFecha del incidente: "+r.fecha+
+            "\nRegistrado: "+r.creado+
+            "\nDescripción: "+r.descripcion+
+            "\nSolicitud: "+r.ayuda+
+            "\nEstado: "+r.estado;
+        datos.style.whiteSpace="pre-wrap";
+
+        const estado=document.createElement("span");
+        estado.className="badge";
+        estado.textContent=r.estado;
+
+        const select=document.createElement("select");
+        ["Pendiente","En revisión","Atendido"].forEach(s=>{
+            const op=document.createElement("option");
+            op.value=s;
+            op.textContent=s;
+            select.appendChild(op);
+        });
+        select.value=r.estado;
+
+        select.addEventListener("change",()=>{
+            const todos=obtenerReportes();
+            const index=todos.findIndex(x=>x.id===r.id);
+            if(index!==-1){
+                todos[index].estado=select.value;
+                guardarReportes(todos);
+                cargarReportes();
+            }
+        });
+
+        const tituloEstado=document.createElement("label");
+        tituloEstado.textContent="Actualizar estado:";
+
+        div.append(titulo,estado,datos,tituloEstado,select);
+        lista.appendChild(div);
+    });
+}
+
+</script>
+</body>
+</html>
